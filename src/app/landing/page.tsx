@@ -404,7 +404,7 @@ function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((p) => (
             <div key={p.name} className={`glass card-hover p-6 relative ${p.popular ? 'ring-2' : ''}`}
-              style={p.popular ? { ringColor: '#A2D2FF' } : {}}>
+              style={p.popular ? { outline: '2px solid #A2D2FF' } : {}}>
               {p.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-white"
                   style={{ background: 'linear-gradient(135deg, #CDB4DB, #A2D2FF)' }}>
