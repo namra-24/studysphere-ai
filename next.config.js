@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdfjs-dist'],
-  },
+ serverExternalPackages: ['...']
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     return config;
