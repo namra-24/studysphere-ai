@@ -9,15 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "15.3.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "@anthropic-ai/sdk": "^0.27.0",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.3.0",
     "lucide-react": "^0.447.0",
+    "next": "^16.2.9",
     "pdfjs-dist": "^4.6.82",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
-    "clsx": "^2.1.1",
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
