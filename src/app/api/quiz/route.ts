@@ -59,6 +59,9 @@ Rules:
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
 
+console.log("Raw Gemini response:");
+console.log(text);
+
 let cleaned = text.replace(/```json|```/gi, "").trim();
 
 const start = cleaned.indexOf("[");
