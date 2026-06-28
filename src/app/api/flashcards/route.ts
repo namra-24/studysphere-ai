@@ -27,7 +27,7 @@ Return ONLY a valid JSON array.
 
 Rules:
 - Do NOT use markdown.
-- Do NOT use ```json.
+- Do NOT use markdown code fences.
 - Do NOT explain anything.
 - Do NOT include any text before or after the array.
 - Escape all quotation marks inside strings.
