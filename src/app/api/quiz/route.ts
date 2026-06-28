@@ -43,7 +43,10 @@ Rules:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 1000 },
+          generationConfig: {
+  maxOutputTokens: 2000,
+  temperature: 0.2,
+},
         }),
       }
     );
@@ -54,13 +57,31 @@ Rules:
       throw new Error(data.error?.message || 'Gemini API error');
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    const questions = JSON.parse(cleaned);
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
 
-    if (!Array.isArray(questions)) throw new Error('Invalid format');
+let cleaned = text.replace(/```json|```/gi, "").trim();
 
-    return NextResponse.json({ questions: questions.slice(0, count) });
+const start = cleaned.indexOf("[");
+const end = cleaned.lastIndexOf("]");
+
+if (start !== -1 && end !== -1) {
+  cleaned = cleaned.substring(start, end + 1);
+}
+
+let questions;
+
+try {
+  questions = JSON.parse(cleaned);
+} catch (err) {
+  console.error("Gemini returned invalid JSON:", cleaned);
+  throw new Error("AI returned an invalid quiz format. Please try again.");
+}
+
+if (!Array.isArray(questions)) {
+  throw new Error("Invalid quiz format");
+}
+
+return NextResponse.json({ questions: questions.slice(0, count) });
 
   } catch (error: any) {
     console.error('Quiz API error:', error);
