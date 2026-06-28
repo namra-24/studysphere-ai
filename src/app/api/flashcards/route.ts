@@ -23,10 +23,23 @@ ${typeInstructions[cardType] || typeInstructions['Q&A']}
 Study Material:
 ${pdfText}
 
-Return ONLY a valid JSON array. No markdown, no explanation, no backticks. Just the array:
+Return ONLY a valid JSON array.
+
+Rules:
+- Do NOT use markdown.
+- Do NOT use ```json.
+- Do NOT explain anything.
+- Do NOT include any text before or after the array.
+- Escape all quotation marks inside strings.
+- Every string must begin and end with double quotes.
+- The response must be valid JSON that can be parsed directly.
+
+Example:
 [
-  {"front": "...", "back": "..."},
-  ...
+  {
+    "front": "What is photosynthesis?",
+    "back": "The process by which plants convert light energy into chemical energy."
+  }
 ]
 
 Make the cards educational, accurate, and based only on the provided material.`;
@@ -37,7 +50,10 @@ Make the cards educational, accurate, and based only on the provided material.`;
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 1000 },
+          generationConfig: {
+  maxOutputTokens: 2000,
+  temperature: 0.2,
+},
         }),
       }
     );
@@ -48,9 +64,31 @@ Make the cards educational, accurate, and based only on the provided material.`;
       throw new Error(data.error?.message || 'Gemini API error');
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    const cards = JSON.parse(cleaned);
+const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+
+// Remove markdown fences if present
+let cleaned = text.replace(/```json|```/gi, "").trim();
+
+// Keep only the JSON array
+const start = cleaned.indexOf("[");
+const end = cleaned.lastIndexOf("]");
+
+if (start !== -1 && end !== -1) {
+  cleaned = cleaned.substring(start, end + 1);
+}
+
+let cards;
+
+try {
+  cards = JSON.parse(cleaned);
+} catch (err) {
+  console.error("Gemini returned invalid JSON:", cleaned);
+  throw new Error("AI returned an invalid flashcard format. Please try again.");
+}
+
+if (!Array.isArray(cards)) {
+  throw new Error("Invalid response format");
+}
 
     if (!Array.isArray(cards)) throw new Error('Invalid response format');
 
