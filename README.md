@@ -3,8 +3,6 @@
 > Your AI-powered academic companion — upload PDFs, chat with them, generate flashcards, quizzes, summaries, and more.
 
 ![StudySphere AI](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)
-![Powered by Claude](https://img.shields.io/badge/Powered%20by-Claude%20AI-orange?style=flat-square)
-![Deploy on Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=flat-square&logo=vercel)
 
 ---
 
